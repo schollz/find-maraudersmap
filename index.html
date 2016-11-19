@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>The Marauder's Map</title>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
+    <style>
+      html, body, #map {
+        height:100%;
+        width:100%;
+        margin:0;
+        padding:0;
+      }
+      .esriScalebar{
+        padding: 20px 20px;
+      }
+      #map{
+        padding:0;
+      }
+    </style>
+
+    <script>var dojoConfig = { parseOnLoad: true };</script>
+    <script src="https://js.arcgis.com/3.18/"></script>
+    <script>
+      var map;
+      require([
+        "esri/map",
+        "esri/layers/FeatureLayer",
+        "esri/dijit/PopupTemplate",
+        "esri/request",
+        "esri/geometry/Point",
+        "esri/graphic",
+        "dojo/on",
+        "dojo/_base/array",
+        "dojo/domReady!"
+      ], function(
+        Map,
+        FeatureLayer,
+        PopupTemplate,
+        esriRequest,
+        Point,
+        Graphic,
+        on,
+        array
+      ) {
+
+        var featureLayer;
+
+        map = new Map("map", {
+          basemap: "streets-relief-vector",
+          center: [-46.807, 32.553],
+          zoom: 3
+        });
+
+        //hide the popup if its outside the map's extent
+        map.on("mouse-drag", function(evt) {
+          if (map.infoWindow.isShowing) {
+            var loc = map.infoWindow.getSelectedFeature().geometry;
+            if (!map.extent.contains(loc)) {
+              map.infoWindow.hide();
+            }
+          }
+        });
+
+        //create a feature collection for the flickr photos
+        var featureCollection = {
+          "layerDefinition": null,
+          "featureSet": {
+            "features": [],
+            "geometryType": "esriGeometryPoint"
+          }
+        };
+        featureCollection.layerDefinition = {
+          "geometryType": "esriGeometryPoint",
+          "objectIdField": "ObjectID",
+          "drawingInfo": {
+            "renderer": {
+              "type": "simple",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "/marker.png",
+                "contentType": "image/png",
+                "width": 18,
+                "height": 18
+              }
+            }
+          },
+          "fields": [{
+            "name": "ObjectID",
+            "alias": "ObjectID",
+            "type": "esriFieldTypeOID"
+          }, {
+            "name": "description",
+            "alias": "Description",
+            "type": "esriFieldTypeString"
+          }, {
+            "name": "title",
+            "alias": "Title",
+            "type": "esriFieldTypeString"
+          }]
+        };
+
+        //define a popup template
+        var popupTemplate = new PopupTemplate({
+          title: "{title}",
+          description: "{description}"
+        });
+
+        //create a feature layer based on the feature collection
+        featureLayer = new FeatureLayer(featureCollection, {
+          id: 'flickrLayer',
+          infoTemplate: popupTemplate
+        });
+
+        //associate the features with the popup on click
+        featureLayer.on("click", function(evt) {
+          map.infoWindow.setFeatures([evt.graphic]);
+        });
+
+        map.on("layers-add-result", function(results) {
+          var myVar = setInterval(requestPhotos, 1000);          
+          // requestPhotos();
+        });
+        //add the feature layer that contains the flickr photos to the map
+        map.addLayers([featureLayer]);
+
+      function requestPhotos() {
+        //get geotagged photos from flickr
+        //tags=flower&tagmode=all
+        var requestHandle = esriRequest({
+          url: "http://finddemo.duckdns.org/data.json",
+          callbackParamName: "jsoncallback"
+        });
+        requestHandle.then(requestSucceeded, requestFailed);
+      }
+
+      function requestSucceeded(response, io) {
+        //loop through the items and add to the feature layer
+        var features = [];
+        array.forEach(response.items, function(item) {
+          var attr = {};
+          attr["description"] = item.description;
+          attr["title"] = item.title ? item.title : "Flickr Photo";
+
+          var geometry = new Point(item);
+
+          var graphic = new Graphic(geometry);
+          graphic.setAttributes(attr);
+          features.push(graphic);
+        });
+        featureLayer.clear()
+        featureLayer.applyEdits(features, null, null);
+      }
+
+      function requestFailed(error) {
+        console.log('failed');
+      }
+    });
+    </script>
+
+    <script>
+    var QueryString = function () {
+  // This function is anonymous, is executed immediately and 
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+        // If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = decodeURIComponent(pair[1]);
+        // If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+      query_string[pair[0]] = arr;
+        // If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(decodeURIComponent(pair[1]));
+    }
+  } 
+  return query_string;
+}();
+</script>
+  </head>
+  <body >
+    <div id="map"></div>
+  </body>
+
+</html>
