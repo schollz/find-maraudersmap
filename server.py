@@ -3,6 +3,7 @@ import json
 import time
 import random
 import hashlib
+import os.path
 
 # {
 #   "users": {
@@ -40,37 +41,56 @@ import hashlib
 # }
 
 
-def getJSON():
-	r = requests.get('https://ml.internalpositioning.com/location?group=hack')
-	data = r.json()
-	payload = {}
-	payload["title"] = "Some title"
-	payload["link"] = "asldfkjaslfd"
-	payload["description"] = "asldkfjaksldjf"
-	payload["modified"] = "2016-11-19T20:01:45Z"
-	payload["generator"] = "https:\/\/www.flickr.com"
-	payload["items"] = []
-	for user in data['users'].keys():
-		try:
-			foo = data['users'][user][0]['location']
-			item = {}
-			item['title'] = user
-			item['description']= "Location: " + \
-				foo.split('=')[0] + "<br>Last seen: " + \
-				data['users'][user][0]['time'].split(".")[0] + \
-				"<br><img src=\"/%s\" width=\"180\" height=\"240\" alt=\"\" \/>" % (user + ".jpg")
-			rSeed = hash(data['users'][user][0]['time'])
-			random.seed(rSeed)				
-			item['latitude'] = str(float(foo.split('=')[1]) + random.random()/50000)
-			item['longitude'] = str(float(foo.split('=')[2]) + random.random()/50000)
-			payload['items'].append(item)
-		except:
-			pass
-	print(data)
-	return payload
 
-while True:
-	time.sleep(3)
-	with open("data.json","w") as f:
-		f.write(json.dumps(getJSON()))
+def getJSON(group):
+    if os.path.isfile(group + ".json"):
+        if time.time()-os.path.getmtime(group + ".json") < 3:
+            return
+    r = requests.get('https://ml.internalpositioning.com/location?group=' + group)
+    data = r.json()
+    payload = {}
+    payload["title"] = "Some title"
+    payload["link"] = "asldfkjaslfd"
+    payload["description"] = "asldkfjaksldjf"
+    payload["modified"] = "2016-11-19T20:01:45Z"
+    payload["generator"] = "https:\/\/www.flickr.com"
+    payload["items"] = []
+    if 'users' not in data:
+        return
+    for user in data['users'].keys():
+        try:
+            foo = data['users'][user][0]['location']
+            item = {}
+            item['title'] = user
+            item['description']= "Location: " + \
+                foo.split('=')[0] + "<br>Last seen: " + \
+                data['users'][user][0]['time'].split(".")[0] + \
+                "<br><img src=\"/%s\" width=\"180\" height=\"240\" alt=\"\" \/>" % (user + ".jpg")
+            rSeed = hash(data['users'][user][0]['time'])
+            random.seed(rSeed)                
+            item['latitude'] = str(float(foo.split('=')[1]) + random.random()/50000)
+            item['longitude'] = str(float(foo.split('=')[2]) + random.random()/50000)
+            payload['items'].append(item)
+        except:
+            pass
+    print("got " + group)
+    with open(group + ".json","w") as f:
+        f.write(json.dumps(getJSON(group)))
+    return payload
 
+from flask import Flask, request
+app = Flask(__name__)
+
+@app.route('/makejson')
+def data():
+    # here we want to get the value of user (i.e. ?user=some-value)
+    group = request.args.get('group','')
+    if len(group) == 0:
+            return "must add group"
+    getJSON(group)
+    return "done"
+
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")

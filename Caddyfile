@@ -2,8 +2,27 @@ http://152.3.52.86 {
 	browse
 }
 
+ml.internalpositioning.com {
+        gzip
+	root /home/phi/find
+        proxy / 127.0.0.1:8003 {
+		except /static
+		except /data
+                proxy_header Host {host}
+                proxy_header X-Real-IP {remote}
+                proxy_header X-Forwarded-Proto {scheme}
+        }
+        log logs/ml.internalpositioning.com.log
+}
+
 http://www.maraudersmap.online, http://finddemo.duckdns.org {
 	gzip
 	root /home/bitnami/
+	proxy /makejson 127.0.0.1:5000 {
+                proxy_header Host {host}
+                proxy_header X-Real-IP {remote}
+                proxy_header X-Forwarded-Proto {scheme}
+
+	}
 }
 

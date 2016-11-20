@@ -24,7 +24,92 @@
 
     <script>var dojoConfig = { parseOnLoad: true };</script>
     <script src="https://js.arcgis.com/3.18/"></script>
+   
+
     <script>
+    var QueryString = function () {
+  // This function is anonymous, is executed immediately and 
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+        // If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = decodeURIComponent(pair[1]);
+        // If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+      query_string[pair[0]] = arr;
+        // If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(decodeURIComponent(pair[1]));
+    }
+  } 
+  return query_string;
+}();
+</script>
+<style>
+#heart53100 {position:absolute;
+top:600px;
+left:20px;
+z-index:2;
+height:4em;
+width:18em;
+font-size:1.5em;
+padding: 1em;
+color:black;
+text-transform: capitalize;
+font-family: 'Pirata One', cursive;
+color: darkred;
+}
+</style>
+<link href="https://fonts.googleapis.com/css?family=Pirata+One" rel="stylesheet">
+
+<script>
+// http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+var group = getParameterByName("group")
+if (group == null || group == "") {
+  group = "hackduke"
+}
+</script>
+  </head>
+  <body >
+    <div id="map"></div>
+
+"stylesheet">
+<div id="heart53100">🗺 The Marauder's Map<br>
+<a href="https://play.google.com/store/apps/details?id=com.hcp.find">Download app</a
+><br>
+Goto Options -> Change group<br>
+Enter <strong>"<script>document.write(group)</script>"</strong><br>
+</div>
+
+
+ <script>
+ function httpGetAsync(theUrl, callback)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send(null);
+}
+
       var map;
       require([
         "esri/map",
@@ -52,8 +137,8 @@
         var featureLayer;
 
         map = new Map("map", {
-          center: [-46.807, 32.553],
-          zoom: 3
+          center: [-78.93948,36.00328],
+          zoom: 17
         });
 
         // from https://a.tiles.mapbox.com/v4/examples.a4c252ab/page.html?access_token=pk.eyJ1Ijoic3RhbWVuIiwiYSI6IlpkZEtuS1EifQ.jiH_c9ShtBwtqH9RdG40mw#17/38.89461/-77.03444
@@ -90,7 +175,7 @@
               "type": "simple",
               "symbol": {
                 "type": "esriPMS",
-                "url": "/marker.png",
+                "url": "/feet.png",
                 "contentType": "image/png",
                 "width": 18,
                 "height": 18
@@ -130,12 +215,15 @@
         });
 
         map.on("layers-add-result", function(results) {
-          var myVar = setInterval(requestPhotos, 1000);          
+          var myVar = setInterval(requestPhotos, 3000);          
           // requestPhotos();
         });
         //add the feature layer that contains the flickr photos to the map
         map.addLayers([featureLayer]);
 
+      function doNothing() {
+
+      }
       function requestPhotos() {
         //get geotagged photos from flickr
         //tags=flower&tagmode=all
@@ -144,6 +232,7 @@
           callbackParamName: "jsoncallback"
         });
         requestHandle.then(requestSucceeded, requestFailed);
+        httpGetAsync("http://www.maraudersmap.online/makejson?group="+group,doNothing);
       }
 
       function requestSucceeded(response, io) {
@@ -169,97 +258,6 @@
       }
     });
     </script>
-
-    <script>
-    var QueryString = function () {
-  // This function is anonymous, is executed immediately and 
-  // the return value is assigned to QueryString!
-  var query_string = {};
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i=0;i<vars.length;i++) {
-    var pair = vars[i].split("=");
-        // If first entry with this name
-    if (typeof query_string[pair[0]] === "undefined") {
-      query_string[pair[0]] = decodeURIComponent(pair[1]);
-        // If second entry with this name
-    } else if (typeof query_string[pair[0]] === "string") {
-      var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
-      query_string[pair[0]] = arr;
-        // If third or later entry with this name
-    } else {
-      query_string[pair[0]].push(decodeURIComponent(pair[1]));
-    }
-  } 
-  return query_string;
-}();
-</script>
-<style>
-#heart53100 {position:absolute;
-top:600px;
-left:20px;
-z-index:2;
-height:4em;
-width:10em;
-font-size:1.0em;
-padding: 1em;
-color:black;
-border:solid thick black;
-text-transform: capitalize;
-font-family: 'Ravi Prakash', cursive;
-background-color: red;
-color: white;
-}
-</style>
-  </head>
-  <body >
-    <div id="map"></div>
-
-<link href="https://fonts.googleapis.com/css?family=Ravi+Prakash" rel="stylesheet">
-<div id="heart53100">🗺 The Marauder's Map<br>
-Tracking <a href="http://ml.internalpositioning.com/dashboard/hack">group 'hack'</a>
-</div>
-<script>
-// -*- coding: utf-8 -*-
-// 2010-03-10, 2014-04-10
-// change the position of a “div#heart53100” element.
-
-(function () {
-
-    var offsetFromTop = window.innerHeight/1.333; // number of pixels of the widget should be from top of the window
-    var updateFrequency= 50; //milisecond. The smaller the value, smooth the animation.
-    var chaseFactor = .05; // the closing-in factor. Smaller makes it smoother.
-
-    var yMoveTo=0;
-    var yDiff=0;
-
-    var movingWidget = document.getElementById("heart53100");
-    movingWidget.style.position="absolute";
-    movingWidget.style.zIndex="2";
-    movingWidget.style.top= offsetFromTop.toString() + "px";
-    movingWidget.style.left="1ex";
-
-    function ff(){
-        // compute the distance user has scrolled the window
-        yDiff = (navigator.appName === "Microsoft Internet Explorer") ? (yMoveTo - document.documentElement.scrollTop) : (yMoveTo - window.pageYOffset) ;
-
-        if ( Math.abs(yDiff) > 9) {
-
-            // turn off now, prevent the event repeatedly fired when user scroll repeatedly
-            window.removeEventListener("scroll", ff);
-
-            yMoveTo -= yDiff*chaseFactor;
-            movingWidget.style.top  = (yMoveTo+offsetFromTop).toString() + "px" ;
-            setTimeout(ff, updateFrequency); // calls itself again
-        } else {
-            window.addEventListener("scroll", ff , false); // turn back on
-        }
-    }
-
-    window.addEventListener("scroll", ff , false);
-
-})();
-</script>
   </body>
 
 </html>
