@@ -228,7 +228,7 @@ Enter <strong>"<script>document.write(group)</script>"</strong><br>
         //get geotagged photos from flickr
         //tags=flower&tagmode=all
         var requestHandle = esriRequest({
-          url: "/data.json",
+          url: "/"+ group+".json",
           callbackParamName: "jsoncallback"
         });
         requestHandle.then(requestSucceeded, requestFailed);

@@ -75,8 +75,8 @@ def getJSON(group):
             pass
     print("got " + group)
     with open(group + ".json","w") as f:
-        f.write(json.dumps(getJSON(group)))
-    return payload
+        f.write(json.dumps(payload))
+    return
 
 from flask import Flask, request
 app = Flask(__name__)
