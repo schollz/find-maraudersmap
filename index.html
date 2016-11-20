@@ -131,7 +131,7 @@
         //get geotagged photos from flickr
         //tags=flower&tagmode=all
         var requestHandle = esriRequest({
-          url: "http://finddemo.duckdns.org/data.json",
+          url: "/data.json",
           callbackParamName: "jsoncallback"
         });
         requestHandle.then(requestSucceeded, requestFailed);
@@ -185,9 +185,72 @@
   return query_string;
 }();
 </script>
+<style>
+#heart53100 {position:absolute;
+top:600px;
+left:20px;
+z-index:2;
+height:4em;
+width:10em;
+font-size:1.0em;
+padding: 1em;
+color:black;
+border:solid thick black;
+text-transform: capitalize;
+font-family: 'Ravi Prakash', cursive;
+background-color: red;
+color: white;
+}
+</style>
   </head>
   <body >
     <div id="map"></div>
+
+<link href="https://fonts.googleapis.com/css?family=Ravi+Prakash" rel="stylesheet">
+<div id="heart53100">🗺 The Marauder's Map<br>
+Tracking <a href="http://ml.internalpositioning.com/dashboard/hack">group 'hack'</a>
+</div>
+<script>
+// -*- coding: utf-8 -*-
+// 2010-03-10, 2014-04-10
+// change the position of a “div#heart53100” element.
+
+(function () {
+
+    var offsetFromTop = window.innerHeight/1.333; // number of pixels of the widget should be from top of the window
+    var updateFrequency= 50; //milisecond. The smaller the value, smooth the animation.
+    var chaseFactor = .05; // the closing-in factor. Smaller makes it smoother.
+
+    var yMoveTo=0;
+    var yDiff=0;
+
+    var movingWidget = document.getElementById("heart53100");
+    movingWidget.style.position="absolute";
+    movingWidget.style.zIndex="2";
+    movingWidget.style.top= offsetFromTop.toString() + "px";
+    movingWidget.style.left="1ex";
+
+    function ff(){
+        // compute the distance user has scrolled the window
+        yDiff = (navigator.appName === "Microsoft Internet Explorer") ? (yMoveTo - document.documentElement.scrollTop) : (yMoveTo - window.pageYOffset) ;
+
+        if ( Math.abs(yDiff) > 9) {
+
+            // turn off now, prevent the event repeatedly fired when user scroll repeatedly
+            window.removeEventListener("scroll", ff);
+
+            yMoveTo -= yDiff*chaseFactor;
+            movingWidget.style.top  = (yMoveTo+offsetFromTop).toString() + "px" ;
+            setTimeout(ff, updateFrequency); // calls itself again
+        } else {
+            window.addEventListener("scroll", ff , false); // turn back on
+        }
+    }
+
+    window.addEventListener("scroll", ff , false);
+
+})();
+</script>
   </body>
 
 </html>

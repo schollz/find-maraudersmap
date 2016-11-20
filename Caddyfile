@@ -2,7 +2,8 @@ http://152.3.52.86 {
 	browse
 }
 
-http://finddemo.duckdns.org {
+http://www.maraudersmap.online, http://finddemo.duckdns.org {
 	gzip
+	root /home/bitnami/
 }
 
