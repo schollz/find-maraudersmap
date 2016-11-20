@@ -63,7 +63,7 @@ def getJSON(group):
             item = {}
             item['title'] = user
             item['description']= "Location: " + \
-                foo.split('=')[0] + "<br>Last seen: " + \
+                foo.split('=')[0] + ", floor " + foo.split('=')[-1] + "<br>Last seen: " + \
                 data['users'][user][0]['time'].split(".")[0] + \
                 "<br><img src=\"/%s\" width=\"180\" height=\"240\" alt=\"\" \/>" % (user + ".jpg")
             rSeed = hash(data['users'][user][0]['time'])

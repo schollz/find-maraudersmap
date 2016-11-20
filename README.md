@@ -2,7 +2,7 @@
 
 > "The magic used in the Marauder's Map creation is advanced and impressive; it includes the Homonculous Charm, enabling the possessor of the map to track the movements of every person in the castle." - [Pottermore](https://www.pottermore.com/writing-by-jk-rowling/the-marauders-map)
 
-This program takes advantage of [ArcGIS API for Javascript](https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=fl_featureCollection) and the ability to introduce [MapBox tilets as basemaps in ArcGIS](https://blogs.esri.com/esri/arcgis/2013/04/01/using-stamen-and-mapbox-tilesets-as-basemaps-in-arcgis-com/), and Zack's [FIND server](https://github.com/schollz/find) to make [The Marauder's Map a reality](http://www.maraudersmap.online/).
+This program takes advantage of [ArcGIS API for Javascript](https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=fl_featureCollection) and the ability to introduce [MapBox tilets as basemaps in ArcGIS](https://blogs.esri.com/esri/arcgis/2013/04/01/using-stamen-and-mapbox-tilesets-as-basemaps-in-arcgis-com/), and Zack's [FIND server](https://github.com/schollz/find) to make [The Marauder's Map a reality](http://themaraudersmap.org/).
 
 # Try it!
 

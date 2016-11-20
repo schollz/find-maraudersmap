@@ -232,7 +232,7 @@ Enter <strong>"<script>document.write(group)</script>"</strong><br>
           callbackParamName: "jsoncallback"
         });
         requestHandle.then(requestSucceeded, requestFailed);
-        httpGetAsync("http://www.maraudersmap.online/makejson?group="+group,doNothing);
+        httpGetAsync("/makejson?group="+group,doNothing);
       }
 
       function requestSucceeded(response, io) {
