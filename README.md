@@ -38,3 +38,4 @@ Follow [the instructions for tracking yourself indoors, using a computer or andr
 
 # Contributions
 Abhimanyu Jataria (abhimanyu.jataria@gmail.com)
+Bishal Gautam (@bishalgautam)
