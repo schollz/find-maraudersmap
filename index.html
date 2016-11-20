@@ -68,6 +68,11 @@ color: darkred;
 <link href="https://fonts.googleapis.com/css?family=Pirata+One" rel="stylesheet">
 
 <script>
+// http://stackoverflow.com/questions/3885817/how-do-i-check-that-a-number-is-float-or-integer
+function isFloat(n){
+    return Number(n) === n && n % 1 !== 0;
+}
+
 // http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
 function getParameterByName(name, url) {
     if (!url) {
@@ -84,6 +89,22 @@ var group = getParameterByName("group")
 if (group == null || group == "") {
   group = "hackduke"
 }
+
+var centerPos = [-78.93948,36.00328];
+var foo = getParameterByName("lon")
+if (foo == null || foo == "") {
+} else {
+  console.log(foo)
+    centerPos[0] = parseFloat(foo);      
+}
+var foo = getParameterByName("lat")
+if (foo == null || foo == "") {
+} else {
+  console.log(foo)
+    centerPos[1] = parseFloat(foo);      
+}
+
+
 </script>
   </head>
   <body >
@@ -137,7 +158,7 @@ Enter <strong>"<script>document.write(group)</script>"</strong><br>
         var featureLayer;
 
         map = new Map("map", {
-          center: [-78.93948,36.00328],
+          center: centerPos,
           zoom: 17
         });
 

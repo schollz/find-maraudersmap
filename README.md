@@ -4,7 +4,14 @@
 
 This program takes advantage of [ArcGIS API for Javascript](https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=fl_featureCollection) and the ability to introduce [MapBox tilets as basemaps in ArcGIS](https://blogs.esri.com/esri/arcgis/2013/04/01/using-stamen-and-mapbox-tilesets-as-basemaps-in-arcgis-com/), and Zack's [FIND server](https://github.com/schollz/find) to make [The Marauder's Map a reality](http://themaraudersmap.org/).
 
-# Try it!
+# Try it at Duke!
+
+Its easy! Downloads [this app](https://play.google.com/store/apps/details?id=com.hcp.find). Goto Options -> Change group -> Enter "hackduke". 
+Then hit Go Back -> Track. 
+
+Now open up http://themaraudersmap.org/ and see your feet move!
+
+# Try it at home!
 
 Want to make your own Marauder's map? Follow these steps:
 
@@ -26,7 +33,7 @@ You can get the latitude and longitude by going to [OpenStreetmap](http://www.op
 
 ## 3. Goto the Marauder's map!
 
-Goto `http://themaraudersmap.org?group=groupname` where **group name** is the one you used to do the learning.
+Goto `http://themaraudersmap.org?group=groupname&lat=LAT&lon=LON` where **group name** is the one you used to do the learning, and **lat** / **lon** is where you want to center the maps coordinates to (it defaults to Duke University).
 
 ## 4. Set your phone or computer to track.
 
