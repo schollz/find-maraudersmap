@@ -2,14 +2,14 @@
 
 > "The magic used in the Marauder's Map creation is advanced and impressive; it includes the Homonculous Charm, enabling the possessor of the map to track the movements of every person in the castle." - [Pottermore](https://www.pottermore.com/writing-by-jk-rowling/the-marauders-map)
 
-This program takes advantage of [ArcGIS API for Javascript](https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=fl_featureCollection) and the ability to introduce [MapBox tilets as basemaps in ArcGIS](https://blogs.esri.com/esri/arcgis/2013/04/01/using-stamen-and-mapbox-tilesets-as-basemaps-in-arcgis-com/), and Zack's [FIND server](https://github.com/schollz/find) to make [The Marauder's Map a reality](http://themaraudersmap.org/).
+This program takes advantage of [ArcGIS API for Javascript](https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=fl_featureCollection) and the ability to introduce [MapBox tilets as basemaps in ArcGIS](https://blogs.esri.com/esri/arcgis/2013/04/01/using-stamen-and-mapbox-tilesets-as-basemaps-in-arcgis-com/), and Zack's [FIND server](https://github.com/schollz/find) to make [The Marauder's Map a reality](http://www.maraudersmap.online/).
 
 # Try it at Duke!
 
 Its easy! Downloads [this app](https://play.google.com/store/apps/details?id=com.hcp.find). Goto Options -> Change group -> Enter "hackduke". 
 Then hit Go Back -> Track. 
 
-Now open up http://themaraudersmap.org/ and see your feet move!
+Now open up http://www.maraudersmap.online/ and see your feet move!
 
 # Try it at home!
 
@@ -33,7 +33,7 @@ You can get the latitude and longitude by going to [OpenStreetmap](http://www.op
 
 ## 3. Goto the Marauder's map!
 
-Goto `http://themaraudersmap.org?group=groupname&lat=LAT&lon=LON` where **group name** is the one you used to do the learning, and **lat** / **lon** is where you want to center the maps coordinates to (it defaults to Duke University).
+Goto `http://www.maraudersmap.online/?group=groupname&lat=LAT&lon=LON` where **group name** is the one you used to do the learning, and **lat** / **lon** is where you want to center the maps coordinates to (it defaults to Duke University).
 
 ## 4. Set your phone or computer to track.
 
