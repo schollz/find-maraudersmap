@@ -28,6 +28,7 @@
       var map;
       require([
         "esri/map",
+        "esri/layers/WebTiledLayer", "dojo/parser",
         "esri/layers/FeatureLayer",
         "esri/dijit/PopupTemplate",
         "esri/request",
@@ -38,6 +39,7 @@
         "dojo/domReady!"
       ], function(
         Map,
+        WebTiledLayer, parser,
         FeatureLayer,
         PopupTemplate,
         esriRequest,
@@ -50,10 +52,17 @@
         var featureLayer;
 
         map = new Map("map", {
-          basemap: "streets-relief-vector",
           center: [-46.807, 32.553],
           zoom: 3
         });
+
+        // from https://a.tiles.mapbox.com/v4/examples.a4c252ab/page.html?access_token=pk.eyJ1Ijoic3RhbWVuIiwiYSI6IlpkZEtuS1EifQ.jiH_c9ShtBwtqH9RdG40mw#17/38.89461/-77.03444
+        var cycleMap = new WebTiledLayer("https://${subDomain}.tiles.mapbox.com/v4/examples.a4c252ab/${level}/${col}/${row}.png?access_token=pk.eyJ1Ijoic3RhbWVuIiwiYSI6IlpkZEtuS1EifQ.jiH_c9ShtBwtqH9RdG40mw", {
+          "copyright": 'MapBox © <a href="https://a.tiles.mapbox.com/v4/examples.a4c252ab/page.html?access_token=pk.eyJ1Ijoic3RhbWVuIiwiYSI6IlpkZEtuS1EifQ.jiH_c9ShtBwtqH9RdG40mw#17/38.89461/-77.03444">Pencil</a>, Data © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+          "id": "OpenCycleMap",
+          "subDomains": ["a", "b", "c","d"]
+        });
+        map.addLayer(cycleMap);
 
         //hide the popup if its outside the map's extent
         map.on("mouse-drag", function(evt) {
