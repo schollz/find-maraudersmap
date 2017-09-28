@@ -47,5 +47,5 @@ Follow [the instructions for tracking yourself indoors, using a computer or andr
 # Contributions
 Zack Scholl (@schollz)
 Abhimanyu Jataria (abhimanyu.jataria@gmail.com)
-Bishal Gautam (@bishalgautam)
+Bishal Gautam (github.com/bishalgautam )
 Huy Tu (@HuyTu7 huyqtu7@gmail.com)
